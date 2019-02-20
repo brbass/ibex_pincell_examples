@@ -5,7 +5,7 @@
     <number_of_groups>2</number_of_groups>
   </energy_discretization>
   <angular_discretization>
-    <dimension>2</dimension>
+    <dimension>3</dimension>
     <number_of_moments>2</number_of_moments>
     <rule>1</rule>
   </angular_discretization>
@@ -96,26 +96,29 @@
     </boundary_source>
   </boundary_sources>
   <solid_geometry>
-    <dimension>2</dimension>
+    <dimension>3</dimension>
     <surfaces>
-      <number_of_surfaces>7</number_of_surfaces>
+      <number_of_surfaces>9</number_of_surfaces>
       <surface index='0'
                shape='cylinder'
                type='internal'>
         <radius>0.4096</radius>
-        <origin>0.0 0.0</origin>
+        <origin>0.0 0.0 0.0</origin>
+        <direction>1.0 0.0 0.0</direction>
       </surface>
       <surface index='1'
                shape='cylinder'
                type='internal'>
         <radius>0.418</radius>
-        <origin>0.0 0.0</origin>
+        <origin>0.0 0.0 0.0</origin>
+        <direction>1.0 0.0 0.0</direction>
       </surface>
       <surface index='2'
                shape='cylinder'
                type='internal'>
         <radius>0.475</radius>
-        <origin>0.0 0.0</origin>
+        <origin>0.0 0.0 0.0</origin>
+        <direction>1.0 0.0 0.0</direction>
       </surface>
       <surface index='3'
                shape='cartesian_plane'
@@ -149,6 +152,22 @@
         <normal>1.0</normal>
         <boundary_source>0</boundary_source>
       </surface>
+      <surface index='7'
+               shape='cartesian_plane'
+               type='boundary'>
+        <surface_dimension>2</surface_dimension>
+        <position>-0.63</position>
+        <normal>-1.0</normal>
+        <boundary_source>0</boundary_source>
+      </surface>
+      <surface index='8'
+               shape='cartesian_plane'
+               type='boundary'>
+        <surface_dimension>2</surface_dimension>
+        <position>0.63</position>
+        <normal>1.0</normal>
+        <boundary_source>0</boundary_source>
+      </surface>
     </surfaces>
     <regions>
       <number_of_regions>4</number_of_regions>
@@ -156,6 +175,10 @@
               material='0'>
         <surface_relation surface='0'
                           relation='inside'/>
+        <surface_relation surface='7'
+                          relation='negative'/>
+        <surface_relation surface='8'
+                          relation='negative'/>
       </region>
       <region index='1'
               material='1'>
@@ -163,6 +186,10 @@
                           relation='outside'/>
         <surface_relation surface='1'
                           relation='inside'/>
+        <surface_relation surface='7'
+                          relation='negative'/>
+        <surface_relation surface='8'
+                          relation='negative'/>
       </region>
       <region index='2'
               material='2'>
@@ -170,6 +197,10 @@
                           relation='outside'/>
         <surface_relation surface='2'
                           relation='inside'/>
+        <surface_relation surface='7'
+                          relation='negative'/>
+        <surface_relation surface='8'
+                          relation='negative'/>
       </region>
       <region index='3'
               material='3'>
@@ -183,24 +214,28 @@
                           relation='negative'/>
         <surface_relation surface='6'
                           relation='negative'/>
+        <surface_relation surface='7'
+                          relation='negative'/>
+        <surface_relation surface='8'
+                          relation='negative'/>
       </region>
     </regions>
   </solid_geometry>
-  <spatial_discretization input_format='points'
-                          points_file='pincell_scaled_13_0.15_0.075_0.4101_1.26_exclude_rand.xml'>
-    <options weighting='point'
+  <spatial_discretization input_format='galerkin_points'
+                          points_file='cuboid_-0.63_0.63_-0.63_0.63_-0.63_0.63_10_10_10_False.xml'>
+    <options weighting='full'
              external_integral_calculation='true'
              supg='true'
              tau_scaling='none'
              identical_basis_functions='true'
              output_material='false'
              output_integrals='false'
-             adaptive_quadrature='true'
+             adaptive_quadrature='false'
              minimum_radius_ordinates='32'
              maximum_integration_ordinates='1024'>
       <tau>0</tau>
-      <integration_ordinates>16</integration_ordinates>
-      <dimensional_cells>76 76</dimensional_cells>
+      <integration_ordinates>8</integration_ordinates>
+      <dimensional_cells>10 10 10</dimensional_cells>
     </options>
     <weight_functions>
       <radius_calculation method='coverage'>
@@ -208,12 +243,12 @@
         <radius_multiplier>1.0</radius_multiplier>
       </radius_calculation>
       <meshless_function type='linear_mls'
-                         function='wendland31'/>
+                         function='wendland11'/>
     </weight_functions>
   </spatial_discretization>
   <problem type='eigenvalue'
-           discretization='strong'/>
-  <transport solver='amesos_parallel'
+           discretization='weak'/>
+  <transport solver='belos_ifpack'
              level_of_fill='1.0'
              drop_tolerance='1e-12'
              tolerance='1e-10'
@@ -233,8 +268,9 @@
     <!--   <limits> -->
     <!--     -0.63 0.63 -->
     <!--     -0.63 0.63 -->
+    <!--     -0.63 0.63 -->
     <!--   </limits> -->
-    <!--   <dimensional_cells>100 100</dimensional_cells> -->
+    <!--   <dimensional_cells>10 10 10</dimensional_cells> -->
     <!-- </value> -->
   </solver>
 </input>
